@@ -1,0 +1,16 @@
+numpy==1.23.5
+mlflow>=2.1.1
+scikit-learn==1.2.1
+Flask==2.2.2
+Flask-AppBuilder==4.1.4
+Flask-Babel==2.0.0
+Flask-Caching==2.0.2
+Flask-JWT-Extended==4.4.4
+Flask-Login==0.6.2
+Flask-Session==0.4.0
+Flask-SQLAlchemy==2.5.1
+Flask-WTF==1.1.1
+SQLAlchemy==1.4.46
+SQLAlchemy-JSONField==1.0.1.post0
+SQLAlchemy-Utils==0.39.0
+sqlparse==0.4.3
