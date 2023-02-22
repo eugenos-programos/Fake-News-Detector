@@ -1,5 +1,11 @@
-name: Project_name
+name: fake-news-detector-project
 
 docker_env: 
-	image: fake-news-detector
+  image: fake-news-detector
+  
+entry_points:
+  main:
+    command:
+      "python build_project.py"
+      
 
