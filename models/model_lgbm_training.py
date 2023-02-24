@@ -17,12 +17,9 @@ with mlf.start_run(tags={"version" : "1.0.0", "type" : "boosting"}, run_name='li
     data_file_name = 'preproc_train.csv'
     vectorizer_file_name = 'vectorizer.pkl'
 
-    mlf.models.Model()
-
     data = pd.read_csv(data_file_name).dropna()
     with open(vectorizer_file_name, 'rb') as vecfile:
         vectorizer = pickle.load(vecfile)
-    mlf.log_param('vectorizer', vectorizer)
     encoded_data = vectorizer.transform(data.title)
 
     model = LGBMClassifier(**params)
@@ -32,4 +29,4 @@ with mlf.start_run(tags={"version" : "1.0.0", "type" : "boosting"}, run_name='li
     mlf.log_metric("accuracy", score)
     signature = mlf.models.signature.infer_signature(encoded_data, data.label)
 
-    mlf.lightgbm.save_model(model, "LGBMClassifier", signature=signature, input_example=encoded_data)
+    mlf.lightgbm.log_model(model, "LGBMClassifier", signature=signature, input_example=encoded_data, registered_model_name="LGBMClassifier")
