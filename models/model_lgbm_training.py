@@ -3,6 +3,7 @@ import mlflow as mlf
 import pandas as pd
 import pickle
 import yaml
+import os
 
 
 with mlf.start_run(tags={"version" : "2.0.0", "type" : "boosting"}, run_name='lightgbm-2.0.0-run') as run:
@@ -21,9 +22,9 @@ with mlf.start_run(tags={"version" : "2.0.0", "type" : "boosting"}, run_name='li
     val_file_name = confs['val_data_file']
     vectorizer_file_name = confs['vectorizer_file']
 
-    train_data = pd.read_csv(train_file_name).dropna()
-    val_data = pd.read_csv(val_file_name).dropna()
-    with open(vectorizer_file_name, 'rb') as vecfile:
+    train_data = pd.read_csv(os.path.join('..', train_file_name)).dropna()
+    val_data = pd.read_csv(os.path.join('..', val_file_name)).dropna()
+    with open(os.path.join('..', val_file_name), 'rb') as vecfile:
         vectorizer = pickle.load(vecfile)
     encoded_train_data = vectorizer.transform(train_data.title)
     encoded_val_data = vectorizer.transform(val_data.title)

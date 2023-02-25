@@ -1,3 +1,0 @@
-train_data_file: train_data.csv
-val_data_file: val_data.csv
-vectorizer_file: vectorizer.pkl
