@@ -1,8 +1,7 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit, QGridLayout, QWidget, QComboBox
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtCore import QSize, Qt
-
-import typing
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit, QGridLayout, QWidget, QComboBox
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QSize, Qt
+import os
 
 
 class MainWindow(QMainWindow):
@@ -31,7 +30,7 @@ class MainWindow(QMainWindow):
         self.preds_label.setFixedSize(120, 40)
 
     def create_image_label(self):
-        self.image = QPixmap('fc_detect_image.png')
+        self.image = QPixmap(os.path.join('UI', 'fc_detect_image.png'))
         self.image_label = QLabel()
         self.image_label.setPixmap(self.image)
         self.image_label.setScaledContents(True)
@@ -74,8 +73,11 @@ class MainWindow(QMainWindow):
         print(self.combo_box.currentText()) 
 
 
-def run():
-    app = QApplication([])
-    window = MainWindow()
-    window.show()
-    app.exec()
+class QTApp():
+    def __init__(self) -> None:
+        self.app = QApplication([])
+        self.window = MainWindow()
+
+    def run(self):
+        self.window.show()
+        self.app.exec()
