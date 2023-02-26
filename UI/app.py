@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit, QGridLayout, QWidget, QComboBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit, QGridLayout, QWidget, QComboBox, QMessageBox, QErrorMessage
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QSize, Qt
 import os
@@ -40,9 +40,18 @@ class MainWindow(QMainWindow):
         self.input_line.setPlaceholderText("Enter site url")
         self.input_line.setFixedSize(QSize(400, 40))
 
+    def message_box(self, message):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText(message)
+        msg.setMinimumSize(QSize(300, 300))
+        msg.setWindowTitle("Error message")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec()
+
     def create_combo_box(self):
         self.combo_box = QComboBox()
-        self.combo_box.addItems(["BERT", "CatBoost", "LightGBM"])   
+        self.combo_box.addItems(["CatBoost", "LightGBM"])   
 
     def create_layout(self):
         align_center = Qt.AlignmentFlag.AlignHCenter
@@ -54,23 +63,27 @@ class MainWindow(QMainWindow):
         self.create_input_line()
         self.create_combo_box()
 
-        layout = QGridLayout()
-        layout.setColumnStretch(5, 1)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(self.image_label, 0, 0, 1, 1, alignment=align_center)
-        layout.addWidget(self.label, 1, 0, 1, 1, alignment=align_center)
-        layout.addWidget(self.input_line, 2, 0, 1, 1, alignment=align_center)
-        layout.addWidget(self.button, 3, 0, 1, 1, alignment=align_center)
-        layout.addWidget(self.preds_label, 5, 0, 1, 1, alignment=align_center)
-        layout.addWidget(self.combo_box, 3, 1, 1, 1, alignment=align_center)
+        self.layout = QGridLayout()
+        self.layout.setColumnStretch(5, 1)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.addWidget(self.image_label, 0, 0, 1, 1, alignment=align_center)
+        self.layout.addWidget(self.label, 1, 0, 1, 1, alignment=align_center)
+        self.layout.addWidget(self.input_line, 2, 0, 1, 1, alignment=align_center)
+        self.layout.addWidget(self.button, 3, 0, 1, 1, alignment=align_center)
+        self.layout.addWidget(self.preds_label, 5, 0, 1, 1, alignment=align_center)
+        self.layout.addWidget(self.combo_box, 3, 1, 1, 1, alignment=align_center)
 
         self.container = QWidget()
-        self.container.setLayout(layout)
-        
+        self.container.setLayout(self.layout)
         self.setCentralWidget(self.container)
 
     def click_button(self):
-        print(self.combo_box.currentText()) 
+        try:
+            model_type = self.combo_box.currentText()
+            url = self.input_line.text()
+            print(0 / 0)
+        except Exception as exc:
+            self.message_box(str(exc))
 
 
 class QTApp():
