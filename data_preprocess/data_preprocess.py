@@ -11,9 +11,12 @@ class DataPreprocessor():
 
     tf_idf_vectorizer : TfidfVectorizer = None
 
-    def __init__(self, max_text_size=500) -> None:
+    def __init__(self) -> None:
         self.web_scaper = WebScraper()
         self.port_stemmer = PorterStemmer()
+        self.conf_file = 'models_config.yml'
+        with open(self.conf_file, 'rb') as confile:
+            max_text_size = int(yaml.safe_load(confile)['max_text_length'])
         self.max_text_size = max_text_size
 
     def stemming(self, text : str):
@@ -25,11 +28,10 @@ class DataPreprocessor():
     
     def vectorize_tf_idf(self, text):
         if self.tf_idf_vectorizer is None:
-            with open('../models_config.yml', 'rb') as confile:
+            with open(self.conf_file, 'rb') as confile:
                 tf_ifd_file_name = yaml.safe_load(confile)['vectorizer_file']
-            with open(os.path.join('..', tf_ifd_file_name), 'rb') as vecfile:
+            with open(os.path.join('.', tf_ifd_file_name), 'rb') as vecfile:
                 self.tf_idf_vectorizer = pickle.load(vecfile)
-        print(text)
         vectorized_text = self.tf_idf_vectorizer.transform([text])
         return vectorized_text
     
