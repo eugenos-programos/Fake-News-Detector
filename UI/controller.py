@@ -8,3 +8,4 @@ class Controller():
     def predict(self, model_type, url) -> None:
         label = self.model.predict(model_type, url)
         return label
+    

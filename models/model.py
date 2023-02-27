@@ -13,12 +13,16 @@ class Model():
         if model_type == 'LightGBM':
             vectorized_text = self.__vectorize_text__(url)
             prediction = self.lightgbm_model.predict(vectorized_text)
+            pred_proba = self.lightgbm_model.predict_proba(vectorized_text)
+            pred_proba = round(float(pred_proba[0][prediction]), 4)
         elif model_type == 'CatBoost':
             vectorized_text = self.__vectorize_text__(url)
             prediction = self.catboost_model.predict(vectorized_text)
+            pred_proba = self.catboost_model.predict_proba(vectorized_text)
+            pred_proba = round(float(pred_proba[0][prediction]), 4)
         else:
             raise ValueError(f"Unknown model type - {model_type}")
-        return prediction
+        return prediction, pred_proba
         
     def __vectorize_text__(self, url : str):
         vectorized_text = self.data_preproces.transform(url)
