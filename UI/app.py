@@ -2,15 +2,16 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLin
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QSize, Qt
 import os
+from controller import Controller
 
 
 class MainWindow(QMainWindow):
-    def __init__(self) -> None:
+    def __init__(self, app) -> None:
         super().__init__()
 
+        self.app = app
         self.setWindowTitle("Fake news detector")
         self.setFixedSize(QSize(1100, 1000))
-
         self.create_layout()
     
     def create_button(self):
@@ -81,7 +82,8 @@ class MainWindow(QMainWindow):
         try:
             model_type = self.combo_box.currentText()
             url = self.input_line.text()
-            print(0 / 0)
+            prediction = self.app.predict(model_type, url)
+            print('Prediction - ', prediction)
         except Exception as exc:
             self.message_box(str(exc))
 
@@ -89,7 +91,11 @@ class MainWindow(QMainWindow):
 class QTApp():
     def __init__(self) -> None:
         self.app = QApplication([])
-        self.window = MainWindow()
+        self.window = MainWindow(self)
+        self.controller = Controller()
+
+    def predict(self, model_type, url):
+        return self.controller.predict(model_type, url)
 
     def run(self):
         self.window.show()
