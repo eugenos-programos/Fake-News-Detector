@@ -1,0 +1,4 @@
+mlflow<3,>=2.1
+catboost==1.1.1
+colorama==0.4.6
+ipywidgets==8.0.4
