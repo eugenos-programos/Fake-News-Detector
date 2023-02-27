@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QSize, Qt
 import os
 from controller import Controller
+import time
 
 
 class MainWindow(QMainWindow):
@@ -41,7 +42,7 @@ class MainWindow(QMainWindow):
         self.input_line.setPlaceholderText("Enter site url")
         self.input_line.setFixedSize(QSize(400, 40))
 
-    def message_box(self, message):
+    def error_message(self, message):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
         msg.setText(message)
@@ -78,14 +79,26 @@ class MainWindow(QMainWindow):
         self.container.setLayout(self.layout)
         self.setCentralWidget(self.container)
 
+    def prediction_message(self, prediction, time):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText(f"Prediction - {prediction}.\nTime - {round(time, 4)}")
+        msg.setMinimumSize(QSize(300, 300))
+        msg.setWindowTitle("Prediction")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.exec()
+
     def click_button(self):
         try:
             model_type = self.combo_box.currentText()
             url = self.input_line.text()
+            start = time.time()
             prediction = self.app.predict(model_type, url)
+            end = time.time()
+            self.prediction_message(prediction, end - start)
             print('Prediction - ', prediction)
         except Exception as exc:
-            self.message_box(str(exc))
+            self.error_message(str(exc))
 
 
 class QTApp():
