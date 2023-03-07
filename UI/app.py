@@ -51,9 +51,13 @@ class MainWindow(QMainWindow):
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec()
 
-    def create_combo_box(self):
-        self.combo_box = QComboBox()
-        self.combo_box.addItems(["CatBoost", "LightGBM"])   
+    def create_models_combo_box(self):
+        self.models_combo_box = QComboBox()
+        self.models_combo_box.addItems(["CatBoost", "LightGBM"])   
+
+    def create_vectorizers_combo_box(self):
+        self.vect_combo_box = QComboBox()
+        self.vect_combo_box.addItems(["TF-IDF", "Word2Vec"])
 
     def create_layout(self):
         align_center = Qt.AlignmentFlag.AlignHCenter
@@ -63,7 +67,8 @@ class MainWindow(QMainWindow):
         self.create_label_preds()
         self.create_image_label()
         self.create_input_line()
-        self.create_combo_box()
+        self.create_models_combo_box()
+        self.create_vectorizers_combo_box()
 
         self.layout = QGridLayout()
         self.layout.setColumnStretch(5, 1)
@@ -73,7 +78,8 @@ class MainWindow(QMainWindow):
         self.layout.addWidget(self.input_line, 2, 0, 1, 1, alignment=align_center)
         self.layout.addWidget(self.button, 3, 0, 1, 1, alignment=align_center)
         self.layout.addWidget(self.preds_label, 5, 0, 1, 1, alignment=align_center)
-        self.layout.addWidget(self.combo_box, 3, 1, 1, 1, alignment=align_center)
+        self.layout.addWidget(self.models_combo_box, 3, 1, 1, 1, alignment=align_center)
+        self.layout.addWidget(self.vect_combo_box, 3, 2, 1, 1, alignment=align_center)
 
         self.container = QWidget()
         self.container.setLayout(self.layout)
@@ -89,10 +95,11 @@ class MainWindow(QMainWindow):
 
     def click_button(self):
         try:
-            model_type = self.combo_box.currentText()
+            model_type = self.models_combo_box.currentText()
+            vectorizer = self.vect_combo_box.currentText()
             url = self.input_line.text()
             start = time.time()
-            prediction, predict_proba = self.app.predict(model_type, url)
+            prediction, predict_proba = self.app.predict(model_type, vectorizer, url)
             end = time.time()
             self.prediction_message(prediction, predict_proba, end - start)
             print('Prediction - ', prediction)
