@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
 
     def create_models_combo_box(self):
         self.models_combo_box = QComboBox()
-        self.models_combo_box.addItems(["CatBoost", "LightGBM"])   
+        self.models_combo_box.addItems(["CatBoost", "LightGBM", "LSTM"])   
 
     def create_vectorizers_combo_box(self):
         self.vect_combo_box = QComboBox()
@@ -113,8 +113,8 @@ class QTApp():
         self.window = MainWindow(self)
         self.controller = Controller()
 
-    def predict(self, model_type, url):
-        return self.controller.predict(model_type, url)
+    def predict(self, model_type, vectorizer, url):
+        return self.controller.predict(model_type, vectorizer, url)
 
     def run(self):
         self.window.show()

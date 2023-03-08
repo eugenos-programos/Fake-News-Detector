@@ -5,7 +5,7 @@ class Controller():
     def __init__(self) -> None:
         self.model = Model()
     
-    def predict(self, model_type, url) -> None:
-        label = self.model.predict(model_type, url)
+    def predict(self, model_type, vectorizer, url) -> None:
+        label = self.model.predict(model_type, vectorizer, url)
         return label
     
